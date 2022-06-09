@@ -1,5 +1,4 @@
 const express = require('express');
-const { serverPort } = require('../../config/production');
 const { auth } = require('../../middleware/auto');
 const router = express.Router();
 const User = require('../../models/User');
