@@ -1,0 +1,52 @@
+extends base.pug
+
+block contents
+    div.p-8.mt-8
+        h1.text-2xl.font-bold.text-center 가입하기
+        form.flex.flex-col.mt-12.space-y-2(action="/api/signup" method="POST")
+            input.rounded.border.border-gray-200.p-2(name="name" type="text" placeholder="이름")
+            input.rounded.border.border-gray-200.p-2(name="email" type="email" placeholder="이메일")
+            input.rounded.border.border-gray-200.p-2(name="password" type="password" placeholder="비밀번호")
+            input.rounded.border.border-gray-200.p-2(name="password2" type="password" placeholder="비밀번호 확인")
+            input(id="checkDuplicate" name="checkDuplicate" type="hidden")
+            button.primary-btn.red-btn(class="signup") 가입하기
+
+        button.primary-btn.red-btn(class="ajaxsend") 이메일 중복확인
+
+        script.
+            // 페이지 전체를 load 하지 않고 서버로부터 원하는 데이터만 받아서 처리할 수 있는 ajax 활용
+            document.querySelector('.ajaxsend').addEventListener('click', () => {
+                let jsonObj = new Object();
+
+                jsonObj.email = document.forms[0].elements[1].value;
+                //jsonObj.password = document.forms[0].elements[1].value;
+                //jsonObj.checkPassword = document.forms[0].elements[2].value;
+                if(jsonObj.email == "" /*|| jsonObj.password == "" || jsonObj.checkPassword == ""*/) 
+                {
+                    alert("이메일을 입력하세요.");
+                    return;
+                }
+
+                sendAjax('/api/signup/ajax_id_duplicate_check', jsonObj);
+            })
+
+            function sendAjax(url, jsonObj){
+                let loginData = JSON.stringify(jsonObj);
+
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', url);
+                xhr.setRequestHeader('Content-Type', "application/json");
+                xhr.send(loginData);
+                xhr.addEventListener('load', () => {
+                    console.log(xhr.responseText);
+                    let result = JSON.parse(xhr.responseText);
+                    if(result.result !== "ok") 
+                    {
+                        alert(result.email + " 중복된 ID 입니다.");
+                        return;
+                    }
+
+                    document.getElementById("checkDuplicate").value = 'ok';
+                    alert(result.email + " 가능한 ID 입니다.");
+                });
+            }
