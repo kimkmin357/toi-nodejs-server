@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <heaad>
+        <meta charset="utf-8">
+        <title>Login ejs template</title>
+    </heaad>
+    <body>
+        <h1><%= response %></h1>
+        <% if (result) { %>
+            <img src="/public/images/signin_success.png" ><br>
+            <a href="/api/logout">logout</a><br>
+        <% } else { %>
+            <img src="/public/images/signin_err.png" ><br>
+            <a href="/api/signin">go to login page</a><br>
+        <% } %>
+        
+    </body>
+</html>
