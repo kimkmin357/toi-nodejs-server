@@ -29,7 +29,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.5",
     "node-fetch": "^2.6.7",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "request-ip": "^2.2.0",
+    "request-promise": "^4.2.6"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
