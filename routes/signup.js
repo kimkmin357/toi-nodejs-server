@@ -3,7 +3,44 @@ const router = express.Router();
 const path = require('path')
 const User = require(path.join(__dirname , '../db/users'))
 
-// @route  GET /signup
+
+
+/**
+ * @param {Object.<string, *>} query
+ * @returns {string}
+ */
+ function makeQueryString(query) {
+    const keys = Object.keys(query)
+    return keys
+      .map((key) => [key, query[key]])
+      .filter(([, value]) => value)
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      )
+      .join('&')
+  }
+
+/**
+ * @typedef RedirectInfo
+ * @property {import('express').Response} res
+ * @property {string} dest
+ * @property {string} [error]
+ * @property {string} [info]
+ */
+
+/**
+ * @param {RedirectInfo} param0
+ */
+ function redirectWithMsg({ res, dest, error, info }) {
+    res.redirect(`${dest}?${makeQueryString({ info, error })}`)
+}
+
+
+
+
+
+// @route  GET /api/signup
 // @desc   Signup page
 // @access Public
 router.get('/', (req, res) => { 
@@ -11,39 +48,51 @@ router.get('/', (req, res) => {
     res.render('signup');
 })
 
-// @route  POST /signup
+// @route  POST /api/signup
 // @desc   Signup user
 // @access Public
 router.post('/', async (req, res) => {
-    console.log("This is '/signup' post API");
 
-    if(req.body.checkDuplicate != 'ok'){
-        res.write("<script>alert('Please check duplicate email.')</script>");
-        res.write("<script>window.location=\"../api/signup\"</script>");
+    // if(req.body.checkDuplicate != 'ok'){
+    //     res.write("<script>alert('Please check duplicate email.')</script>");
+    //     res.write("<script>window.location=\"../api/signup\"</script>");
+    //     res.end();
+    //     return;
+    // }
+
+    if(req.body.name == '' || req.body.email == ''){
+        // res.write("<script>alert('Please enter a name and email.')</script>");
+        // res.write("<script>window.location=\"../api/signup\"</script>");
+        // res.end();
+        redirectWithMsg({
+            res,
+            dest: '/api/signup',
+            error: '이름, 이메일, 비밀번호를 모두 입력해야 합니다.'
+        })
         return;
     }
 
-    if(req.body.name == ''){
-        res.write("<script>alert('Please enter a name.')</script>");
-        res.write("<script>window.location=\"../api/signup\"</script>");
-        return;
-    }
-
-    if(req.body.email == ''){
-        res.write("<script>alert('Please enter a email.')</script>");
-        res.write("<script>window.location=\"../api/signup\"</script>");
-        return;
-    }
-
-    if(req.body.password == '' || req.body.password2 == ''){
-        res.write("<script>alert('Please enter a password.')</script>");
-        res.write("<script>window.location=\"../api/signup\"</script>");
+    if(req.body.password == ''){
+        // res.write("<script>alert('Please enter a password.')</script>");
+        // res.write("<script>window.location=\"../api/signup\"</script>");
+        // res.end();
+        redirectWithMsg({
+            res,
+            dest: '/api/signup',
+            error: '비밀번호를 입력해야 합니다.'
+        })
         return;
     }
 
     if(req.body.password != req.body.password2){
-        res.write("<script>alert('Passwords do not match.')</script>");
-        res.write("<script>window.location=\"../api/signup\"</script>");
+        // res.write("<script>alert('Passwords do not match.')</script>");
+        // res.write("<script>window.location=\"../api/signup\"</script>");
+        // res.end();
+        redirectWithMsg({
+            res,
+            dest: '/api/signup',
+            error: '비밀번호가 일치하지 않습니다.'
+        })
         return;
     }
 
@@ -52,8 +101,13 @@ router.post('/', async (req, res) => {
         const result = await User.findOne({useremail: req.body.email});
 
         if(result){
-            res.write("<script>alert('Duplicate email.')</script>");
-            res.write("<script>window.location=\"../api/signup\"</script>");
+            // res.write("<script>alert('Duplicate email.')</script>");
+            // res.write("<script>window.location=\"../api/signup\"</script>");
+            redirectWithMsg({
+                res,
+                dest: '/api/signup',
+                error: '동일한 이메일이 존재합니다.'
+            })
             return;
         }
     } catch(err) {
@@ -78,9 +132,9 @@ router.post('/', async (req, res) => {
                     return res.cookie("x_auth", user.token)
                             .status(200)
                             .redirect('/api');
-                            //.render('result_login.ejs', {'response' : 'Welcome ' + req.body.email +' !!', 'result' : true});
+                            //.render('result_login.pug', {'response' : 'Welcome ' + req.body.email +' !!', 'result' : true});
                 })
-                .catch((err) => res.status(400).render('result_login.ejs', {'response' : 'Unknown Err', 'result' : false}));
+                .catch((err) => res.status(400).render('result_login.pug', {'response' : 'Unknown Err', 'result' : false}));
         }
         else{
             return res.status(200).send(err);
@@ -99,7 +153,6 @@ router.post('/', async (req, res) => {
     // })
 
 
-    // //TO DO : email 형식 검사
     // User.findOne({useremail: req.body.email})
     //     .then((result) => {
     //         if(result){
@@ -123,28 +176,27 @@ router.post('/', async (req, res) => {
 
 })
 
-// @route  POST /signup/ajax_id_duplicate_check
+// @route  POST /api/signup/ajax_id_duplicate_check
 // @desc   Check duplicate user id
 // @access Public
-router.post('/ajax_id_duplicate_check', async (req, res) => {
-    console.log("This is '/api/signup/ajax_id_duplicate_check' post API")
+// router.post('/ajax_id_duplicate_check', async (req, res) => {
 
-    try {
-        const result = await User.findOne({useremail: req.body.email}).exec();
+//     try {
+//         const result = await User.findOne({useremail: req.body.email}).exec();
 
-        let responseData;
-        if(result){
-            responseData = {'result' : 'ng', 'id' : req.body.email};
-        }
-        else{
-            responseData = {'result' : 'ok', 'id' : req.body.email};
-        }
-        res.json(responseData);
-    } catch(err) {
-        res.status(500).send("Server Error");
-    }
+//         let responseData;
+//         if(result){
+//             responseData = {'result' : 'ng', 'email' : req.body.email};
+//         }
+//         else{
+//             responseData = {'result' : 'ok', 'email' : req.body.email};
+//         }
+//         res.json(responseData);
+//     } catch(err) {
+//         res.status(500).send("Server Error");
+//     }
     
     
-})
+// })
 
 module.exports = router;

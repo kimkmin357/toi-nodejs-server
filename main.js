@@ -12,6 +12,7 @@ const { PORT } = require('./config/configOption');
 // express 관련 설정 부분을 따로 분리(라우팅, 파서, 뷰, 스태틱 설정 등)
 const app = require('./app')
 
-app.listen(PORT, () => {
-  console.log(`The Express server is listening at port: ${PORT}`)
-})
+// @ts-ignore
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`The Express server is listening at port: ${PORT}`);
+});

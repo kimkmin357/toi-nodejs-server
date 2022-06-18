@@ -4,11 +4,12 @@ const router = express.Router();
 const path = require('path');
 const User = require(path.join(__dirname , '../db/users'));
 
-// const { APP_CONFIG_JSON } = require('../config/configOption')
 const signin = require('./signin');
 const signup = require('./signup');
 const auth = require('./auth/auth');
 const authorization = require('./auth/authorization');
+const resetPw = require('./requestResetPw');
+
 
 // @route  GET /api
 // @desc   Routing Root
@@ -18,7 +19,7 @@ router.get('/', authorization.authorization, (req,res) => {
     //res.render('signin')
 
     if (req.user) {
-        res.render('result_login.ejs', {'response' : 'Welcome ' + req.user.useremail +' !!', 'result' : true});
+        res.render('result_login.pug', {'response' : 'Welcome ' + req.user.useremail +' !!', 'result' : true});
     } else {
         res.render('signin');
     }
@@ -38,8 +39,24 @@ router.get("/logout", authorization.authorization, (req, res) => {
     });
 });
 
+// @route  GET /api/verify-email
+// @desc   Verify email
+// @access Public
+router.get('/verify-email', async (req, res) => {
+    const { code } = req.query
+    if (!code) {
+      res.status(400).end()
+      return
+    }
+  
+    const users = await getUsersCollection()
+    // TODO
+})
+
 router.use('/signin', signin)
 router.use('/signup', signup)
 router.use('/auth', auth)
+router.use('/request-reset-password', resetPw)
+
 
 module.exports = router;

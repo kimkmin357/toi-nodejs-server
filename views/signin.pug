@@ -13,18 +13,15 @@ block contents
             a.text-sm.text-gray-600(href="/api/request-reset-password") 비밀번호 초기화
             a.text-sm.ml-2.text-gray-600(href="/api/signup") 이메일로 회원가입
         div.flex.flex-col.mt-12.items-center.space-y-2
-            a#naver_id_login.hidden
             a#fb-login.primary-btn
                 img.logo(src="/public/logos/facebook.png")
                 div.text.text-lg Facebook으로 로그인
-            a#kakao-login.primary-btn(href="/api/auth/kakao")
+            a#kakao-login.primary-btn(href="/api/auth/kakao_login")
                 img.logo(src="/public/logos/kakao.png")
                 div.text.text-lg 카카오 로그인
-            a#naver-login.primary-btn
+            a#naver-login.primary-btn(href="/api/auth/naver_login")
                 img.logo(src="/public/logos/naver.png")
                 div.text.text-lg 네이버 아이디로 로그인
 
-block scripts
-    script(src="/public/fb.js")
-    script(src="/public/naver.js")
-    script(src="/public/kakao.js")
+//- block scripts
+    //- script(src="/public/fb.js")

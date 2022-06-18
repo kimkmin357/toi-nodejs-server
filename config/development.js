@@ -28,7 +28,7 @@ const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID
 /** @type {string} */
 // @ts-nocheck
 const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET
-const NAVER_REDIRECT_URI = `https://${IP}:${PORT}/api/auth/naver/callback`
+const NAVER_REDIRECT_URI = `http://${IP}:${PORT}/api/auth/naver/callback`
 
 
 
@@ -40,20 +40,20 @@ const KAKAO_REST_KEY = process.env.KAKAO_REST_KEY
 const KAKAO_SECRET = process.env.KAKAO_SECRET
 const KAKAO_REDIRECT_URI = `http://${IP}:${PORT}/api/auth/kakao/callback`
 
-// const APP_CONFIG_JSON = JSON.stringify({
-//   IP,
-//   PORT,
-//   FB_APP_ID,
-//   FB_CLIENT_SECRET,
-//   NAVER_CLIENT_ID,
-//   NAVER_REDIRECT_URI,
-//   NAVER_REDIRECT_URI,
-//   KAKAO_REST_KEY,
-//   KAKAO_SECRET,
-//   KAKAO_REDIRECT_URI,
-//   MONGO_URI,
-//   NODE_ENV
-// }).replace(/"/g, '\\"')
+const APP_CONFIG_JSON = JSON.stringify({
+  IP,
+  PORT,
+  FB_APP_ID,
+  FB_CLIENT_SECRET,
+  NAVER_CLIENT_ID,
+  NAVER_REDIRECT_URI,
+  NAVER_REDIRECT_URI,
+  KAKAO_REST_KEY,
+  KAKAO_SECRET,
+  KAKAO_REDIRECT_URI,
+  MONGO_URI,
+  NODE_ENV
+}).replace(/"/g, '\\"')
 
 module.exports = {
   IP,
@@ -67,6 +67,6 @@ module.exports = {
   KAKAO_SECRET,
   KAKAO_REDIRECT_URI,
   MONGO_URI,
-  NODE_ENV
-  //APP_CONFIG_JSON
+  NODE_ENV,
+  APP_CONFIG_JSON
 }
