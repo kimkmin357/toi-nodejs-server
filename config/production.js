@@ -25,7 +25,7 @@ const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID
 /** @type {string} */
 // @ts-nocheck
 const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET
-const NAVER_REDIRECT_URI = `https://${HOST}:${PORT}/auth/naver/callback`
+const NAVER_REDIRECT_URI = `https://${IP}:${PORT}/auth/naver/callback`
 
 
 
@@ -35,7 +35,7 @@ const KAKAO_REST_KEY = process.env.KAKAO_REST_KEY
 /** @type {string} */
 // @ts-nocheck
 const KAKAO_SECRET = process.env.KAKAO_SECRET
-const KAKAO_REDIRECT_URI = `http://${HOST}:${PORT}/auth/kakao/callback`
+const KAKAO_REDIRECT_URI = `http://${IP}:${PORT}/auth/kakao/callback`
 
 // const APP_CONFIG_JSON = JSON.stringify({
 //   IP,
