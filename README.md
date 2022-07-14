@@ -143,6 +143,12 @@
 
     -   [[express] 네이버 로그인을 통해 회원 정보 받아오기](https://velog.io/@dldmswjd322/node.js-%EB%84%A4%EC%9D%B4%EB%B2%84-%EB%A1%9C%EA%B7%B8%EC%9D%B8%EC%9D%84-%ED%86%B5%ED%95%B4-%ED%9A%8C%EC%9B%90-%EC%A0%95%EB%B3%B4-%EB%B0%9B%EC%95%84%EC%98%A4%EA%B8%B0)
 
+    -   [시놀로지 NAS에 Jenkins 구축하기](https://www.bearpooh.com/49)
+
+    -   [젠킨스와 Github 연동](https://narup.tistory.com/224)
+    
+    -   [Github 웹훅 설정 에러](https://honeyinfo7.tistory.com/293)
+
 5. 향후 보완점
 
     -   비밀번호 초기화 및 이메일 인증
